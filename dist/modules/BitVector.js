@@ -4,10 +4,15 @@ exports.BitVector = void 0;
 const BitHelpers_1 = require("./BitHelpers");
 class BitVector {
     constructor(opts = {}) {
-        var _a;
         this.values = [];
         this.curIdx = 0;
-        this.countBits = (_a = opts.countBits) !== null && _a !== void 0 ? _a : 32;
+        this.countBits = 32;
+        if (opts.countBits) {
+            if ([8, 16, 32].findIndex(i => i === opts.countBits) === -1) {
+                throw new Error('Incorrect bits value.');
+            }
+            this.countBits = opts.countBits;
+        }
     }
     push(val) {
         if (!this.haveRow(this.curIdx)) {
@@ -44,8 +49,17 @@ class BitVector {
         this.curIdx = 0;
     }
     print() {
-        console.log('-----Print vector-----');
         this.values.forEach(i => console.log(i.toString(2)));
+    }
+    get buffer() {
+        switch (this.countBits) {
+            case 8:
+                return new Uint8Array(this.values).buffer;
+            case 16:
+                return new Uint16Array(this.values).buffer;
+            default:
+                return new Uint32Array(this.values).buffer;
+        }
     }
     get length() {
         return this.curIdx;

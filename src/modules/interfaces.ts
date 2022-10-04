@@ -1,3 +1,3 @@
 export interface VectorOpts {
-    countBits?: number
+    countBits?: 8 | 16 | 32
 }

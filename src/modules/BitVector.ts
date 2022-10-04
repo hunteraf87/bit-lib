@@ -4,10 +4,15 @@ import {isSetBit, resetBit, setBit} from "./BitHelpers";
 export class BitVector {
     private values: Array<number> = [];
     private curIdx: number = 0;
-    private readonly countBits: number;
+    private readonly countBits: number = 32;
 
     constructor(opts: VectorOpts = {}) {
-        this.countBits = opts.countBits ?? 32;
+        if (opts.countBits) {
+            if ([8,16,32].findIndex(i => i === opts.countBits) === -1) {
+                throw new Error('Incorrect bits value.')
+            }
+            this.countBits = opts.countBits;
+        }
     }
 
     push(val: boolean): void {
@@ -51,6 +56,17 @@ export class BitVector {
 
     print(): void {
         this.values.forEach(i => console.log(i.toString(2)));
+    }
+
+    get buffer(): ArrayBuffer {
+        switch (this.countBits) {
+            case 8:
+                return new Uint8Array(this.values).buffer;
+            case 16:
+                return new Uint16Array(this.values).buffer;
+            default:
+                return new Uint32Array(this.values).buffer;
+        }
     }
 
     get length(): number {
