@@ -73,7 +73,7 @@ export class BitScope {
     }
 
     private fillFreeMasks(): void {
-        for(let i = 31; i >= 0; i--) {
+        for(let i = 30; i >= 0; i--) {
             this._freeMasks.push(1 << i);
         }
     }
