@@ -1,4 +1,4 @@
-const { BitVector } = require("./dist");
+const { BitVector } = require("../dist");
 
 // const vector = new BitVector({ countBits: 8 });
 const vector = new BitVector();

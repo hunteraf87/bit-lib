@@ -1,6 +1,6 @@
-export {BitVector} from "./modules/BitVector";
-export {BitScope} from "./modules/BitScope";
-export {isSetBit, resetBit, setBit, reverseBit} from "./modules/BitHelpers";
+export {BitVector} from "./modules/vector";
+export {BitScope} from "./modules/scope";
+export {isSetBit, resetBit, setBit, reverseBit} from "./modules/helpers";
 
 
 

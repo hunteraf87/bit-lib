@@ -1,4 +1,4 @@
-const { isSetBit, setBit, resetBit, reverseBit } = require("./dist");
+const { isSetBit, setBit, resetBit, reverseBit } = require("../dist");
 
 let num = 0;
 num = setBit(num, 3);

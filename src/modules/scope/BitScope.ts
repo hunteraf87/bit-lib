@@ -1,9 +1,10 @@
-import {ScopeKey} from "./interfaces";
-import {BitMaskMix} from "./BitMaskMix";
+import {ScopeKey, BitScope as Scope} from "./interfaces";
+import BitMaskMix from "./BitMaskMix";
 
-export class BitScope {
-    private _masks: Map<ScopeKey, number> = new Map()
-    private _freeMasks: Array<number> = new Array(31)
+export default class BitScope implements Scope {
+    private _masks: Map<ScopeKey, number> = new Map();
+    private _freeMasks: Uint32Array = new Uint32Array(31);
+    private _idxMask: number = 0;
 
     constructor(alias: ScopeKey);
     constructor(aliases: Array<ScopeKey>);
@@ -57,9 +58,10 @@ export class BitScope {
 
     private addAlias(alias: ScopeKey): void {
         if (!this._masks.has(alias)) {
-            const mask = this._freeMasks.pop();
+            const mask = this._freeMasks[this._idxMask];
             if (mask !== undefined) {
                 this._masks.set(alias, mask);
+                this._idxMask--;
             }
         }
     }
@@ -67,14 +69,15 @@ export class BitScope {
     private deleteAlias(alias: ScopeKey): void {
         const mask = this._masks.get(alias);
         if (mask !== undefined) {
-            this._freeMasks.push(mask);
+            this._freeMasks[++this._idxMask] = mask;
             this._masks.delete(alias);
         }
     }
 
     private fillFreeMasks(): void {
         for(let i = 30; i >= 0; i--) {
-            this._freeMasks.push(1 << i);
+            this._freeMasks[this._idxMask++] = 1 << i;
         }
+        this._idxMask--;
     }
 }

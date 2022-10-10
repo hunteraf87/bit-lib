@@ -1,4 +1,4 @@
-const { BitScope } = require("./dist");
+const { BitScope } = require("../dist");
 
 const permissions = new BitScope(['read', 'write', 'delete']);
 // const permissions = new BitScope();
